@@ -1,11 +1,21 @@
 {
   "name": "d3-uml",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "uml diagram lib base on d3",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "AwayQuEM",
-  "license": "ISC"
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5"
+  }
 }
