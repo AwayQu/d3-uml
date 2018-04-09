@@ -4,6 +4,23 @@ import Icon from './favicon.ico';
 import printMe from './print.js';
 import * as dagreD3 from "dagre-d3";
 import * as d3 from "d3";
+import {
+    Box,
+    addMarkers,
+    createClasses,
+    createConnectors
+} from './uml/class-diagram'
+import multilineText from './uml/multiline-text'
+
+d3.classDiagram = {
+    Box: Box,
+    addMarkers: addMarkers,
+    createClasses: createClasses,
+    createConnectors: createConnectors,
+}
+
+d3.multilineText = multilineText
+
 
 function component() {
     var element = document.createElement('div');
@@ -16,7 +33,8 @@ function component() {
     var myIcon = new Image();
     myIcon.src = Icon;
 
-    element.appendChild(myIcon);
+    element.appendChild(myIcon
+    );
 
 
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
@@ -100,8 +118,102 @@ function component1() {
 }
 
 document.body.appendChild(component())
-document.body.appendChild(document.createElement("svg"));
+var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+svg1.setAttribute("height", "509")
+svg1.setAttribute("width", "960")
+document.body.appendChild(svg1)
+// document.body.appendChild(document.createElement("svg"));
 component1();
+
+var svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+document.body.appendChild(svg2)
+svg2.setAttribute("id", "d3-class-diagram")
+
+var svg3 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+svg2.appendChild(svg3)
+svg3.setAttribute("height", "509")
+svg3.setAttribute("width", "940")
+svg3.setAttribute("id", "diagram")
+
+var svg = d3.select("#diagram")
+d3.classDiagram.addMarkers(svg.append('defs'));
+
+var classes = [
+    {
+        x: 240, y: 20, width: 260,
+        classname: 'User',
+        attributes: [
+            'microposts: Array[Micropost]',
+            'relationships: Array[Relationship]',
+            'followed_users: Array[User]',
+            'reversed_relationships: Array[Relationship]',
+            'followers: Array[User]',
+        ]
+    },
+    {
+        x: 560, y: 20, width: 140,
+        classname: 'Micropost',
+        attributes: [
+            'user: User',
+            'content: string',
+            'id: integer'
+        ],
+        methods: [
+            'hello: int'
+        ]
+    },
+    {
+        x: 40, y: 20, width: 160,
+        classname: 'Relationship',
+        attributes: [
+            'follower : User',
+            'followed : User'
+        ]
+    }
+];
+
+var boxes = d3.classDiagram.createClasses(classes);
+svg.selectAll('text').attr('font-family', 'Noto Sans Japanese');
+
+var connectors = [
+    {
+        points: [
+            {x: boxes.User.rightX(), y: boxes.Micropost.midY()},
+            {x: boxes.Micropost.x, y: boxes.Micropost.midY()}
+        ],
+        markerEnd: 'arrowhead'
+    },
+    {
+        points: [
+            {x: boxes.Relationship.rightX(), y: boxes.User.midY()},
+            {x: boxes.User.x, y: boxes.User.midY()}
+        ],
+        markerEnd: 'filledDiamond'
+    },
+    {
+        points: [
+            {x: boxes.User.x, y: boxes.User.bottomY() - 20},
+            {x: boxes.User.x - 20, y: boxes.User.bottomY() - 20},
+            {x: boxes.User.x - 20, y: boxes.User.bottomY() + 20},
+            {x: boxes.User.x + 20, y: boxes.User.bottomY() + 20},
+            {x: boxes.User.x + 20, y: boxes.User.bottomY()}
+        ],
+        markerEnd: 'diamond'
+    },
+    {
+        points: [
+            {x: boxes.User.rightX(), y: boxes.User.bottomY() - 20},
+            {x: boxes.User.rightX() + 20, y: boxes.User.bottomY() - 20},
+            {x: boxes.User.rightX() + 20, y: boxes.User.bottomY() + 20},
+            {x: boxes.User.rightX() - 20, y: boxes.User.bottomY() + 20},
+            {x: boxes.User.rightX() - 20, y: boxes.User.bottomY()}
+        ],
+        markerEnd: 'diamond'
+    }
+];
+
+d3.classDiagram.createConnectors(connectors);
+
 
 if (module.hot) {
     module.hot.accept('./print.js', function () {
