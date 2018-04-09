@@ -101,7 +101,7 @@ function component1() {
 
 document.body.appendChild(component())
 document.body.appendChild(document.createElement("svg"));
-// component1();
+component1();
 
 if (module.hot) {
     module.hot.accept('./print.js', function () {

@@ -5,9 +5,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = merge(common, {
-    devtool: 'inline-source-map',
+    // devtool: 'inline-source-map',
+    devtool: 'source-map',
     devServer: {
-        contentBase: './dist',
+        contentBase: './build',
         hot: true
     },
     plugins: [
