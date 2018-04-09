@@ -1,8 +1,9 @@
+import * as d3 from "d3";
 function addMarkers(defs) {
     console.log(defs);
     var a = defs.append('marker');
     console.log(a);
-    a.attr({
+    var b = a.attrs({
             'id': 'filledTraiangle',
             viewBox: '0 0 10 10',
             'refX': 10,
@@ -11,8 +12,9 @@ function addMarkers(defs) {
             'markerHeight': 10,
             'orient': 'auto'
         })
-        .append('path')
-        .attr({
+    console.log(b);
+    b.append('path')
+        .attrs({
             d: 'M10 5 0 0 0 10Z',
             'fill-rule': 'evenodd',
             stroke: 'none',
@@ -20,7 +22,7 @@ function addMarkers(defs) {
         });
 
     defs.append('marker')
-        .attr({
+        .attrs({
             'id': 'triangle',
             viewBox: '0 0 10 10',
             'refX': 10,
@@ -30,7 +32,7 @@ function addMarkers(defs) {
             'orient': 'auto'
         })
         .append('path')
-        .attr({
+        .attrs({
             d: 'M10 5 0 0 0 10 Z M8 5 1 8.4 1 1.6Z',
             'fill-rule': 'evenodd',
             stroke: 'none',
@@ -38,7 +40,7 @@ function addMarkers(defs) {
         });
 
     defs.append('marker')
-        .attr({
+        .attrs({
             'id': 'arrowhead',
             viewBox: '0 0 10 10',
             'refX': 10,
@@ -48,14 +50,14 @@ function addMarkers(defs) {
             'orient': 'auto'
         })
         .append('path')
-        .attr({
+        .attrs({
             d: 'M10 5 0 10 0 8.7 6.8 5.5 0 5.5 0 4.5 6.8 4.5 0 1.3 0 0Z',
             stroke: 'none',
             fill: 'black'
         });
 
     defs.append('marker')
-        .attr({
+        .attrs({
             id: 'diamond',
             viewBox: '0 0 16 10',
             refX: 16,
@@ -65,7 +67,7 @@ function addMarkers(defs) {
             orient: 'auto'
         })
         .append('path')
-        .attr({
+        .attrs({
             d: 'M-1 5 7.5 0 16 5 7.5 10Z M1.3 5 7.5 8.7 14 5 7.5 1.3Z',
             'fill-rule': 'evenodd',
             stroke: 'none',
@@ -73,7 +75,7 @@ function addMarkers(defs) {
         });
 
     defs.append('marker')
-        .attr({
+        .attrs({
             id: 'filledDiamond',
             viewBox: '0 0 16 10',
             refX: 16,
@@ -83,17 +85,28 @@ function addMarkers(defs) {
             orient: 'auto'
         })
         .append('path')
-        .attr({
+        .attrs({
             d: 'M-1 5 7.5 0 16 5 7.5 10Z',
             stroke: 'none',
             fill: 'black'
         });
 }
 
-function createClasses(classes) {
+
+function adjustHeight(rects, texts, paddingTop, paddingBottom) {
+    var i, rect, text, height;
+    for (i = 0; i < rects.length; i++) {
+        rect = rects[i];
+        text = texts[i];
+        height = text.getBBox().height + paddingTop + paddingBottom;
+        d3.select(rect).attrs({'height': height});
+    }
+}
+
+function createClasses(svg, classes) {
     var g = svg.selectAll('g.class')
         .data(classes).enter().append('g')
-        .attr({
+        .attrs({
             id: function (d) {
                 return d.classname + 'Class';
             },
@@ -104,7 +117,7 @@ function createClasses(classes) {
         });
 
     g.append('rect')
-        .attr({
+        .attrs({
             'width': function (d) {
                 return d.width;
             },
@@ -114,9 +127,9 @@ function createClasses(classes) {
         });
 
     var classNameG = g.append('g')
-        .attr('class', 'classname');
+        .attrs({'class': 'classname'});
     var classNameRects = classNameG.append('rect')
-        .attr({
+        .attrs({
             'width': function (d) {
                 return d.width;
             },
@@ -125,7 +138,7 @@ function createClasses(classes) {
             'stroke-width': 1
         });
     var classNameTexts = classNameG.append('text')
-        .attr('font-size', 12)
+        .attrs({'font-size': 12})
         .call(d3.multilineText()
             .verticalAlign('top')
             .paddingTop(4)
@@ -135,24 +148,21 @@ function createClasses(classes) {
             })
         );
 
-    adjustHeight(classNameRects[0], classNameTexts[0], 4, 4);
 
-    function adjustHeight(rects, texts, paddingTop, paddingBottom) {
-        var i,
-            n = rects.length,
-            rect,
-            text,
-            height;
-        for (i = 0; i < n; i++) {
-            rect = rects[i];
-            text = texts[i];
-            height = text.getBBox().height + paddingTop + paddingBottom;
-            d3.select(rect).attr('height', height);
-        }
-    }
+    var a = classNameRects[0];
+    console.log(classNameRects)
+    console.log(classNameRects._groups);
+    console.log(classNameRects.nodes());
+    console.log("a is ")
+    console.log(classNameRects.length)
+    console.log(a)
+    console.log(typeof classNameRects);
+    adjustHeight(classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
 
-    var attributesG = g.append('g')
-        .attr({
+
+
+    var attrsibutesG = g.append('g')
+        .attrs({
             'class': 'attributes',
             'transform': function (d) {
                 var classNameG = d3.select(this).node().previousSibling,
@@ -160,8 +170,8 @@ function createClasses(classes) {
                 return 'translate(0,' + height + ')';
             }
         });
-    var attributesRects = attributesG.append('rect')
-        .attr({
+    var attributesRects = attrsibutesG.append('rect')
+        .attrs({
             'width': function (d) {
                 return d.width;
             },
@@ -169,21 +179,21 @@ function createClasses(classes) {
             'stroke': 'black',
             'stroke-width': 1
         });
-    var attributesTexts = attributesG.append('text')
-        .attr('font-size', 12)
+    var attributesTexts = attrsibutesG.append('text')
+        .attrs({'font-size': 12})
         .call(d3.multilineText()
             .text(function (d) {
-                return d.attributes;
+                return d.attrsibutes;
             })
             .verticalAlign('top')
             .horizontalAlign('left')
             .paddingTop(4)
             .paddingLeft(4)
         );
-    adjustHeight(attributesRects[0], attributesTexts[0], 4, 4);
+    adjustHeight(attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
 
     var methodsG = g.append('g')
-        .attr({
+        .attrs({
             'class': 'methods',
             'transform': function (d) {
                 var attributesG = d3.select(this).node().previousSibling,
@@ -194,7 +204,7 @@ function createClasses(classes) {
             }
         });
     var methodsRects = methodsG.append('rect')
-        .attr({
+        .attrs({
             'width': function (d) {
                 return d.width;
             },
@@ -203,7 +213,7 @@ function createClasses(classes) {
             'stroke-width': 1
         });
     var methodsTexts = methodsG.append('text')
-        .attr('font-size', 12)
+        .attrs({'font-size': 12})
         .call(d3.multilineText()
             .text(function (d) {
                 return d.methods;
@@ -213,7 +223,7 @@ function createClasses(classes) {
             .paddingTop(4)
             .paddingLeft(4)
         );
-    adjustHeight(methodsRects[0], methodsTexts[0], 4, 4);
+    adjustHeight(methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
 
     svg.selectAll('g.class')
         .each(function (d, i) {
@@ -226,7 +236,7 @@ function createClasses(classes) {
                     classNameG.getBBox().height +
                     attributesG.getBBox().height +
                     methodsG.getBBox().height;
-            d3.select(classRect).attr('height', height);
+            d3.select(classRect).attrs({'height': height});
         });
 
     var boxes = {};
@@ -260,8 +270,8 @@ Box.prototype.bottomY = function () {
     return this.y + this.height;
 }
 
-function createConnectors(connectors) {
-    var line = d3.svg.line()
+function createConnectors(svg, connectors) {
+    var line = d3.line()
         .x(function (d) {
             return d.x;
         })
@@ -273,7 +283,7 @@ function createConnectors(connectors) {
         .data(connectors).enter().append('path')
         .each(function (d, i) {
             var path = d3.select(this);
-            path.attr({
+            path.attrs({
                 'class': 'connector',
                 'd': line(d.points),
                 'stroke': 'black',
@@ -281,20 +291,20 @@ function createConnectors(connectors) {
                 'fill': 'none'
             });
             if (d.markerEnd) {
-                path.attr('marker-end', 'url(#' + d.markerEnd + ')');
+                path.attrs({'marker-end': 'url(#' + d.markerEnd + ')'});
             }
         });
 
     svg.selectAll('path.connector')
-        .attr({
+        .attrs({
             'stroke-dasharray': function (d) {
                 var path = d3.select(this),
                     totalLength = path.node().getTotalLength(),
-                    marker = svg.select('#' + d['markerEnd'])[0][0],
+                    marker = svg.select('#' + d['markerEnd']).nodes()[0],
                     markerWidth = marker.markerWidth.baseVal.value;
                 return '' + (totalLength - markerWidth) + ' ' + markerWidth;
             },
-            'stroke-dashoffset': 0
+            'stroke-dashoffset': 1
         });
 }
 

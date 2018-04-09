@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 export default function multilineText() {
   var lineHeight = 1.4;
   var horizontalAlign = 'center'; // 'left', 'center', or 'right'
@@ -32,7 +33,7 @@ export default function multilineText() {
       }
       lineCount = lines.length;
 
-      textElem.attr({
+      textElem.attrs({
         'text-anchor': textAnchorsByHorizontalAlign[horizontalAlign],
         'fill': 'black',
         transform: function(d) {
@@ -43,11 +44,11 @@ export default function multilineText() {
       for (lineI = 0; lineI < lineCount; lineI++) {
         line = lines[lineI];
         textElem.append('tspan')
-          .attr({
+          .attrs({
             'x': 0,
             'y': lineTspanY(lineI, lineCount)
           })
-          .attr(lineTspanAttrs())
+          .attrs(lineTspanAttrs())
           .text(line);
       }
     });

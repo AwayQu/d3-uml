@@ -4,6 +4,7 @@ import Icon from './favicon.ico';
 import printMe from './print.js';
 import * as dagreD3 from "dagre-d3";
 import * as d3 from "d3";
+import * as d3Selection from "d3-selection-multi"
 import {
     Box,
     addMarkers,
@@ -172,7 +173,7 @@ var classes = [
     }
 ];
 
-var boxes = d3.classDiagram.createClasses(classes);
+var boxes = d3.classDiagram.createClasses(svg, classes);
 svg.selectAll('text').attr('font-family', 'Noto Sans Japanese');
 
 var connectors = [
@@ -212,7 +213,7 @@ var connectors = [
     }
 ];
 
-d3.classDiagram.createConnectors(connectors);
+d3.classDiagram.createConnectors(svg, connectors);
 
 
 if (module.hot) {
