@@ -118,21 +118,21 @@ function component1() {
 
 }
 
-document.body.appendChild(component())
-var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-svg1.setAttribute("height", "509")
-svg1.setAttribute("width", "960")
-document.body.appendChild(svg1)
-// document.body.appendChild(document.createElement("svg"));
-component1();
+// document.body.appendChild(component())
+// var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+// svg1.setAttribute("height", "509")
+// svg1.setAttribute("width", "960")
+// document.body.appendChild(svg1)
+// // document.body.appendChild(document.createElement("svg"));
+// component1();
 
-var svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-document.body.appendChild(svg2)
-svg2.setAttribute("id", "d3-class-diagram")
+// var svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+// document.body.appendChild(svg2)
+// svg2.setAttribute("id", "d3-class-diagram")
 
 var svg3 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-svg2.appendChild(svg3)
-svg3.setAttribute("height", "509")
+document.body.appendChild(svg3)
+svg3.setAttribute("height", "240")
 svg3.setAttribute("width", "940")
 svg3.setAttribute("id", "diagram")
 
@@ -173,7 +173,7 @@ var classes = [
     }
 ];
 
-var boxes = d3.classDiagram.createClasses(svg, classes);
+var boxes = d3.classDiagram.createClasses(d3, svg, classes);
 svg.selectAll('text').attr('font-family', 'Noto Sans Japanese');
 
 var connectors = [
@@ -213,7 +213,7 @@ var connectors = [
     }
 ];
 
-d3.classDiagram.createConnectors(svg, connectors);
+d3.classDiagram.createConnectors(d3, svg, connectors);
 
 
 if (module.hot) {

@@ -1,4 +1,3 @@
-import * as d3 from "d3";
 function addMarkers(defs) {
     console.log(defs);
     var a = defs.append('marker');
@@ -93,7 +92,7 @@ function addMarkers(defs) {
 }
 
 
-function adjustHeight(rects, texts, paddingTop, paddingBottom) {
+function adjustHeight(d3, rects, texts, paddingTop, paddingBottom) {
     var i, rect, text, height;
     for (i = 0; i < rects.length; i++) {
         rect = rects[i];
@@ -103,7 +102,7 @@ function adjustHeight(rects, texts, paddingTop, paddingBottom) {
     }
 }
 
-function createClasses(svg, classes) {
+function createClasses(d3, svg, classes) {
     var g = svg.selectAll('g.class')
         .data(classes).enter().append('g')
         .attrs({
@@ -157,11 +156,11 @@ function createClasses(svg, classes) {
     console.log(classNameRects.length)
     console.log(a)
     console.log(typeof classNameRects);
-    adjustHeight(classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
+    adjustHeight(d3, classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
 
 
 
-    var attrsibutesG = g.append('g')
+    var attributesG = g.append('g')
         .attrs({
             'class': 'attributes',
             'transform': function (d) {
@@ -170,7 +169,7 @@ function createClasses(svg, classes) {
                 return 'translate(0,' + height + ')';
             }
         });
-    var attributesRects = attrsibutesG.append('rect')
+    var attributesRects = attributesG.append('rect')
         .attrs({
             'width': function (d) {
                 return d.width;
@@ -179,18 +178,18 @@ function createClasses(svg, classes) {
             'stroke': 'black',
             'stroke-width': 1
         });
-    var attributesTexts = attrsibutesG.append('text')
+    var attributesTexts = attributesG.append('text')
         .attrs({'font-size': 12})
         .call(d3.multilineText()
             .text(function (d) {
-                return d.attrsibutes;
+                return d.attributes;
             })
             .verticalAlign('top')
             .horizontalAlign('left')
             .paddingTop(4)
             .paddingLeft(4)
         );
-    adjustHeight(attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
+    adjustHeight(d3, attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
 
     var methodsG = g.append('g')
         .attrs({
@@ -223,7 +222,7 @@ function createClasses(svg, classes) {
             .paddingTop(4)
             .paddingLeft(4)
         );
-    adjustHeight(methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
+    adjustHeight(d3, methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
 
     svg.selectAll('g.class')
         .each(function (d, i) {
@@ -270,7 +269,7 @@ Box.prototype.bottomY = function () {
     return this.y + this.height;
 }
 
-function createConnectors(svg, connectors) {
+function createConnectors(d3, svg, connectors) {
     var line = d3.line()
         .x(function (d) {
             return d.x;
@@ -304,7 +303,7 @@ function createConnectors(svg, connectors) {
                     markerWidth = marker.markerWidth.baseVal.value;
                 return '' + (totalLength - markerWidth) + ' ' + markerWidth;
             },
-            'stroke-dashoffset': 1
+            'stroke-dashoffset': 0
         });
 }
 

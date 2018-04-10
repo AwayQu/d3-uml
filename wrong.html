@@ -1,0 +1,110 @@
+<svg id="d3-class-diagram">
+    <svg height="240" width="940" id="diagram">
+        <defs>
+            <marker id="filledTraiangle" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10"
+                    orient="auto">
+                <path d="M10 5 0 0 0 10Z" fill-rule="evenodd" stroke="none" fill="black"></path>
+            </marker>
+            <marker id="triangle" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10"
+                    orient="auto">
+                <path d="M10 5 0 0 0 10 Z M8 5 1 8.4 1 1.6Z" fill-rule="evenodd" stroke="none" fill="black"></path>
+            </marker>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10"
+                    orient="auto">
+                <path d="M10 5 0 10 0 8.7 6.8 5.5 0 5.5 0 4.5 6.8 4.5 0 1.3 0 0Z" stroke="none" fill="black"></path>
+            </marker>
+            <marker id="diamond" viewBox="0 0 16 10" refX="16" refY="5" markerWidth="16" markerHeight="10"
+                    orient="auto">
+                <path d="M-1 5 7.5 0 16 5 7.5 10Z M1.3 5 7.5 8.7 14 5 7.5 1.3Z" fill-rule="evenodd" stroke="none"
+                      fill="black"></path>
+            </marker>
+            <marker id="filledDiamond" viewBox="0 0 16 10" refX="16" refY="5" markerWidth="16" markerHeight="10"
+                    orient="auto">
+                <path d="M-1 5 7.5 0 16 5 7.5 10Z" stroke="none" fill="black"></path>
+            </marker>
+        </defs>
+        <g id="UserClass" class="class" transform="translate(240,20)">
+            <rect width="260" fill="none" stroke="black" stroke-width="1" height="135.390625"></rect>
+            <g class="classname">
+                <rect width="260" fill="none" stroke="black" stroke-width="1" height="24.5"></rect>
+                <text font-size="12" text-anchor="middle" fill="black" transform="translate(130,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">User</tspan>
+                </text>
+            </g>
+            <g class="attributes" transform="translate(0,24.5)">
+                <rect width="260" fill="none" stroke="black" stroke-width="1" height="102.890625"></rect>
+                <text font-size="12" text-anchor="start" fill="black" transform="translate(4,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">microposts: Array[Micropost]</tspan>
+                    <tspan x="0" y="1.4em" dy="1em">relationships: Array[Relationship]</tspan>
+                    <tspan x="0" y="2.8em" dy="1em">followed_users: Array[User]</tspan>
+                    <tspan x="0" y="4.199999999999999em" dy="1em">reversed_relationships: Array[Relationship]</tspan>
+                    <tspan x="0" y="5.6em" dy="1em">followers: Array[User]</tspan>
+                </text>
+            </g>
+            <g class="methods" transform="translate(0,127.390625)">
+                <rect width="260" fill="none" stroke="black" stroke-width="1" height="8"></rect>
+                <text font-size="12" font-family="Noto Sans Japanese"></text>
+            </g>
+        </g>
+        <g id="MicropostClass" class="class" transform="translate(560,20)">
+            <rect width="140" fill="none" stroke="black" stroke-width="1" height="112.6875"></rect>
+            <g class="classname">
+                <rect width="140" fill="none" stroke="black" stroke-width="1" height="24.5"></rect>
+                <text font-size="12" text-anchor="middle" fill="black" transform="translate(70,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">Micropost</tspan>
+                </text>
+            </g>
+            <g class="attributes" transform="translate(0,24.5)">
+                <rect width="140" fill="none" stroke="black" stroke-width="1" height="63.6875"></rect>
+                <text font-size="12" text-anchor="start" fill="black" transform="translate(4,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">user: User</tspan>
+                    <tspan x="0" y="1.4em" dy="1em">content: string</tspan>
+                    <tspan x="0" y="2.8em" dy="1em">id: integer</tspan>
+                </text>
+            </g>
+            <g class="methods" transform="translate(0,88.1875)">
+                <rect width="140" fill="none" stroke="black" stroke-width="1" height="24.5"></rect>
+                <text font-size="12" text-anchor="start" fill="black" transform="translate(4,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">hello: int</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="RelationshipClass" class="class" transform="translate(40,20)">
+            <rect width="160" fill="none" stroke="black" stroke-width="1" height="76.59375"></rect>
+            <g class="classname">
+                <rect width="160" fill="none" stroke="black" stroke-width="1" height="24.5"></rect>
+                <text font-size="12" text-anchor="middle" fill="black" transform="translate(80,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">Relationship</tspan>
+                </text>
+            </g>
+            <g class="attributes" transform="translate(0,24.5)">
+                <rect width="160" fill="none" stroke="black" stroke-width="1" height="44.09375"></rect>
+                <text font-size="12" text-anchor="start" fill="black" transform="translate(4,4)"
+                      font-family="Noto Sans Japanese">
+                    <tspan x="0" y="0" dy="1em">follower : User</tspan>
+                    <tspan x="0" y="1.4em" dy="1em">followed : User</tspan>
+                </text>
+            </g>
+            <g class="methods" transform="translate(0,68.59375)">
+                <rect width="160" fill="none" stroke="black" stroke-width="1" height="8"></rect>
+                <text font-size="12" font-family="Noto Sans Japanese"></text>
+            </g>
+        </g>
+        <path class="connector" d="M500,76.34375L560,76.34375" stroke="black" stroke-width="1" fill="none"
+              marker-end="url(#arrowhead)" stroke-dasharray="50 10" stroke-dashoffset="0"></path>
+        <path class="connector" d="M200,87.6953125L240,87.6953125" stroke="black" stroke-width="1" fill="none"
+              marker-end="url(#filledDiamond)" stroke-dasharray="24 16" stroke-dashoffset="0"></path>
+        <path class="connector" d="M240,135.390625L220,135.390625L220,175.390625L260,175.390625L260,155.390625"
+              stroke="black" stroke-width="1" fill="none" marker-end="url(#diamond)" stroke-dasharray="104 16"
+              stroke-dashoffset="0"></path>
+        <path class="connector" d="M500,135.390625L520,135.390625L520,175.390625L480,175.390625L480,155.390625"
+              stroke="black" stroke-width="1" fill="none" marker-end="url(#diamond)" stroke-dasharray="104 16"
+              stroke-dashoffset="0"></path>
+    </svg>
+</svg>
