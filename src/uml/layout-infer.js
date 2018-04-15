@@ -10,6 +10,15 @@ LayoutInfer.prototype.inferHeight = function (classes) {
     }
 };
 
+LayoutInfer.prototype._inferLineHeight = function (lineText) {
+
+};
+
+LayoutInfer.prototype._inferBoxHeight = function (boxInfo) {
+
+};
+
+
 LayoutInfer.prototype.inferWidth = function (classes) {
 
 };
