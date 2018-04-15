@@ -1,16 +1,235 @@
-function addMarkers(defs) {
+function Box(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+}
+
+Box.prototype.midX = function () {
+    return this.x + this.width / 2;
+};
+Box.prototype.rightX = function () {
+    return this.x + this.width;
+}
+Box.prototype.midY = function () {
+    return this.y + this.height / 2;
+}
+Box.prototype.bottomY = function () {
+    return this.y + this.height;
+}
+
+function ClassDiagram(d3, svg) {
+    this.d3 = d3;
+    this.svg = svg;
+}
+
+ClassDiagram.Box = Box;
+
+ClassDiagram.prototype.createConnectors = function (connectors) {
+    const d3 = this.d3;
+    const svg = this.svg;
+    const line = d3.line()
+        .x(function (d) {
+            return d.x;
+        })
+        .y(function (d) {
+            return d.y;
+        });
+
+    svg.selectAll('path.connector')
+        .data(connectors).enter().append('path')
+        .each(function (d, i) {
+            var path = d3.select(this);
+            path.attrs({
+                'class': 'connector',
+                'd': line(d.points),
+                'stroke': 'black',
+                'stroke-width': 1,
+                'fill': 'none'
+            });
+            if (d.markerEnd) {
+                path.attrs({'marker-end': 'url(#' + d.markerEnd + ')'});
+            }
+        });
+
+    svg.selectAll('path.connector')
+        .attrs({
+            'stroke-dasharray': function (d) {
+                var path = d3.select(this),
+                    totalLength = path.node().getTotalLength(),
+                    marker = svg.select('#' + d['markerEnd']).nodes()[0],
+                    markerWidth = marker.markerWidth.baseVal.value;
+                return '' + (totalLength - markerWidth) + ' ' + markerWidth;
+            },
+            'stroke-dashoffset': 0
+        });
+};
+
+ClassDiagram.prototype.createClasses = function (classes) {
+    const d3 = this.d3;
+    const svg = this.svg;
+    var g = svg.selectAll('g.class')
+        .data(classes).enter().append('g')
+        .attrs({
+            id: function (d) {
+                return d.classname + 'Class';
+            },
+            'class': 'class',
+            transform: function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            },
+        });
+
+    g.append('rect')
+        .attrs({
+            'width': function (d) {
+                return d.width;
+            },
+            'fill': 'none',
+            'stroke': 'black',
+            'stroke-width': 1
+        });
+
+    var classNameG = g.append('g')
+        .attrs({'class': 'classname'});
+    var classNameRects = classNameG.append('rect')
+        .attrs({
+            'width': function (d) {
+                return d.width;
+            },
+            'fill': 'none',
+            'stroke': 'black',
+            'stroke-width': 1
+        });
+    var classNameTexts = classNameG.append('text')
+        .attrs({'font-size': 12})
+        .call(d3.multilineText()
+            .verticalAlign('top')
+            .paddingTop(4)
+            .paddingBottom(4)
+            .text(function (d) {
+                return d.classname;
+            })
+        );
+
+
+    this.adjustHeight(classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
+
+
+    var attributesG = g.append('g')
+        .attrs({
+            'class': 'attributes',
+            'transform': function (d) {
+                var classNameG = d3.select(this).node().previousSibling,
+                    height = classNameG.getBBox().height;
+                return 'translate(0,' + height + ')';
+            }
+        });
+    var attributesRects = attributesG.append('rect')
+        .attrs({
+            'width': function (d) {
+                return d.width;
+            },
+            'fill': 'none',
+            'stroke': 'black',
+            'stroke-width': 1
+        });
+    var attributesTexts = attributesG.append('text')
+        .attrs({'font-size': 12})
+        .call(d3.multilineText()
+            .text(function (d) {
+                return d.attributes;
+            })
+            .verticalAlign('top')
+            .horizontalAlign('left')
+            .paddingTop(4)
+            .paddingLeft(4)
+        );
+    this.adjustHeight(attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
+
+    var methodsG = g.append('g')
+        .attrs({
+            'class': 'methods',
+            'transform': function (d) {
+                var attributesG = d3.select(this).node().previousSibling,
+                    classNameText = attributesG.previousSibling,
+                    classNameBBox = classNameText.getBBox(),
+                    attributesBBox = attributesG.getBBox();
+                return 'translate(0,' + (classNameBBox.height + attributesBBox.height) + ')';
+            }
+        });
+    var methodsRects = methodsG.append('rect')
+        .attrs({
+            'width': function (d) {
+                return d.width;
+            },
+            'fill': 'none',
+            'stroke': 'black',
+            'stroke-width': 1
+        });
+    var methodsTexts = methodsG.append('text')
+        .attrs({'font-size': 12})
+        .call(d3.multilineText()
+            .text(function (d) {
+                return d.methods;
+            })
+            .verticalAlign('top')
+            .horizontalAlign('left')
+            .paddingTop(4)
+            .paddingLeft(4)
+        );
+    this.adjustHeight(methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
+
+    svg.selectAll('g.class')
+        .each(function (d, i) {
+            var classG = d3.select(this),
+                classRect = classG.node().firstChild,
+                classNameG = classRect.nextSibling,
+                attributesG = classNameG.nextSibling,
+                methodsG = attributesG.nextSibling,
+                height =
+                    classNameG.getBBox().height +
+                    attributesG.getBBox().height +
+                    methodsG.getBBox().height;
+            d3.select(classRect).attrs({'height': height});
+        });
+
+    var boxes = {};
+    svg.selectAll('g.class')
+        .each(function (d, i) {
+            var classG = d3.select(this),
+                bbox = classG.node().getBBox();
+            boxes[d.classname] = new ClassDiagram.Box(d.x, d.y, bbox.width, bbox.height);
+        });
+
+    return boxes;
+
+}
+
+ClassDiagram.prototype.adjustHeight = function (rects, texts, paddingTop, paddingBottom) {
+    const d3 = this.d3;
+    var i, rect, text, height;
+    for (i = 0; i < rects.length; i++) {
+        rect = rects[i];
+        text = texts[i];
+        height = text.getBBox().height + paddingTop + paddingBottom;
+        d3.select(rect).attrs({'height': height});
+    }
+}
+
+ClassDiagram.prototype.addMarkers = function (defs) {
     console.log(defs);
     var a = defs.append('marker');
     console.log(a);
     var b = a.attrs({
-            'id': 'filledTraiangle',
-            viewBox: '0 0 10 10',
-            'refX': 10,
-            'refY': 5,
-            'markerWidth': 10,
-            'markerHeight': 10,
-            'orient': 'auto'
-        })
+        'id': 'filledTraiangle',
+        viewBox: '0 0 10 10',
+        'refX': 10,
+        'refY': 5,
+        'markerWidth': 10,
+        'markerHeight': 10,
+        'orient': 'auto'
+    })
     console.log(b);
     b.append('path')
         .attrs({
@@ -92,224 +311,6 @@ function addMarkers(defs) {
 }
 
 
-function adjustHeight(d3, rects, texts, paddingTop, paddingBottom) {
-    var i, rect, text, height;
-    for (i = 0; i < rects.length; i++) {
-        rect = rects[i];
-        text = texts[i];
-        height = text.getBBox().height + paddingTop + paddingBottom;
-        d3.select(rect).attrs({'height': height});
-    }
-}
-
-function createClasses(d3, svg, classes) {
-    var g = svg.selectAll('g.class')
-        .data(classes).enter().append('g')
-        .attrs({
-            id: function (d) {
-                return d.classname + 'Class';
-            },
-            'class': 'class',
-            transform: function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            },
-        });
-
-    g.append('rect')
-        .attrs({
-            'width': function (d) {
-                return d.width;
-            },
-            'fill': 'none',
-            'stroke': 'black',
-            'stroke-width': 1
-        });
-
-    var classNameG = g.append('g')
-        .attrs({'class': 'classname'});
-    var classNameRects = classNameG.append('rect')
-        .attrs({
-            'width': function (d) {
-                return d.width;
-            },
-            'fill': 'none',
-            'stroke': 'black',
-            'stroke-width': 1
-        });
-    var classNameTexts = classNameG.append('text')
-        .attrs({'font-size': 12})
-        .call(d3.multilineText()
-            .verticalAlign('top')
-            .paddingTop(4)
-            .paddingBottom(4)
-            .text(function (d) {
-                return d.classname;
-            })
-        );
-
-
-    var a = classNameRects[0];
-    console.log(classNameRects)
-    console.log(classNameRects._groups);
-    console.log(classNameRects.nodes());
-    console.log("a is ")
-    console.log(classNameRects.length)
-    console.log(a)
-    console.log(typeof classNameRects);
-    adjustHeight(d3, classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
-
-
-
-    var attributesG = g.append('g')
-        .attrs({
-            'class': 'attributes',
-            'transform': function (d) {
-                var classNameG = d3.select(this).node().previousSibling,
-                    height = classNameG.getBBox().height;
-                return 'translate(0,' + height + ')';
-            }
-        });
-    var attributesRects = attributesG.append('rect')
-        .attrs({
-            'width': function (d) {
-                return d.width;
-            },
-            'fill': 'none',
-            'stroke': 'black',
-            'stroke-width': 1
-        });
-    var attributesTexts = attributesG.append('text')
-        .attrs({'font-size': 12})
-        .call(d3.multilineText()
-            .text(function (d) {
-                return d.attributes;
-            })
-            .verticalAlign('top')
-            .horizontalAlign('left')
-            .paddingTop(4)
-            .paddingLeft(4)
-        );
-    adjustHeight(d3, attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
-
-    var methodsG = g.append('g')
-        .attrs({
-            'class': 'methods',
-            'transform': function (d) {
-                var attributesG = d3.select(this).node().previousSibling,
-                    classNameText = attributesG.previousSibling,
-                    classNameBBox = classNameText.getBBox(),
-                    attributesBBox = attributesG.getBBox();
-                return 'translate(0,' + (classNameBBox.height + attributesBBox.height) + ')';
-            }
-        });
-    var methodsRects = methodsG.append('rect')
-        .attrs({
-            'width': function (d) {
-                return d.width;
-            },
-            'fill': 'none',
-            'stroke': 'black',
-            'stroke-width': 1
-        });
-    var methodsTexts = methodsG.append('text')
-        .attrs({'font-size': 12})
-        .call(d3.multilineText()
-            .text(function (d) {
-                return d.methods;
-            })
-            .verticalAlign('top')
-            .horizontalAlign('left')
-            .paddingTop(4)
-            .paddingLeft(4)
-        );
-    adjustHeight(d3, methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
-
-    svg.selectAll('g.class')
-        .each(function (d, i) {
-            var classG = d3.select(this),
-                classRect = classG.node().firstChild,
-                classNameG = classRect.nextSibling,
-                attributesG = classNameG.nextSibling,
-                methodsG = attributesG.nextSibling,
-                height =
-                    classNameG.getBBox().height +
-                    attributesG.getBBox().height +
-                    methodsG.getBBox().height;
-            d3.select(classRect).attrs({'height': height});
-        });
-
-    var boxes = {};
-    svg.selectAll('g.class')
-        .each(function (d, i) {
-            var classG = d3.select(this),
-                bbox = classG.node().getBBox();
-            boxes[d.classname] = new d3.classDiagram.Box(d.x, d.y, bbox.width, bbox.height);
-        });
-
-    return boxes;
-}
-
-function Box(x, y, width, height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-}
-
-Box.prototype.midX = function () {
-    return this.x + this.width / 2;
-};
-Box.prototype.rightX = function () {
-    return this.x + this.width;
-}
-Box.prototype.midY = function () {
-    return this.y + this.height / 2;
-}
-Box.prototype.bottomY = function () {
-    return this.y + this.height;
-}
-
-function createConnectors(d3, svg, connectors) {
-    var line = d3.line()
-        .x(function (d) {
-            return d.x;
-        })
-        .y(function (d) {
-            return d.y;
-        });
-
-    svg.selectAll('path.connector')
-        .data(connectors).enter().append('path')
-        .each(function (d, i) {
-            var path = d3.select(this);
-            path.attrs({
-                'class': 'connector',
-                'd': line(d.points),
-                'stroke': 'black',
-                'stroke-width': 1,
-                'fill': 'none'
-            });
-            if (d.markerEnd) {
-                path.attrs({'marker-end': 'url(#' + d.markerEnd + ')'});
-            }
-        });
-
-    svg.selectAll('path.connector')
-        .attrs({
-            'stroke-dasharray': function (d) {
-                var path = d3.select(this),
-                    totalLength = path.node().getTotalLength(),
-                    marker = svg.select('#' + d['markerEnd']).nodes()[0],
-                    markerWidth = marker.markerWidth.baseVal.value;
-                return '' + (totalLength - markerWidth) + ' ' + markerWidth;
-            },
-            'stroke-dashoffset': 0
-        });
-}
-
 export {
-    Box,
-    addMarkers,
-    createClasses,
-    createConnectors
+    ClassDiagram
 };
