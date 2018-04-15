@@ -9,66 +9,81 @@ import {ClassDiagram, Context} from "./uml/class-diagram";
 import * as d3Selection from "d3-selection-multi"
 
 
-
 function createLabel(root, classes) {
     ClassDiagram._createClasses(new Context(d3, d3.select(root).append("svg")), classes)
+}
+
+function processClassNodeInfo(classInfo) {
+    return {
+        nodeName: classInfo.classname,
+        value: {
+            shape: "rect",
+            label: [classInfo],
+            labelType: "lazySvg",
+            labelFn: createLabel
+        }
+    }
 }
 
 function component1() {
 // Create a new directed graph
     var g = new dagreD3.graphlib.Graph().setGraph({});
 
-    g.setNode("user", {shape: "rect", label: [
-            {
-                x: 0, y: 0, width: 260,
-                classname: 'User',
-                attributes: [
-                    'microposts: Array[Micropost]',
-                    'relationships: Array[Relationship]',
-                    'followed_users: Array[User]',
-                    'reversed_relationships: Array[Relationship]',
-                    'followers: Array[User]',
-                ]
-            }
-        ], labelType: "lazySvg", labelFn:createLabel});
-    g.setNode("rect", {shape: "rect"});
-    g.setNode("Micropost", {shape: "rect", labelType: "lazySvg", label: [{
-            x: 0, y: 0, width: 140,
-            classname: 'Micropost',
-            attributes: [
-                'user: User',
-                'content: string',
-                'id: integer'
-            ],
-            methods: [
-                'hello: int'
-            ]
-        }], labelFn: createLabel});
-    g.setNode("RelationShip", {shape: "rect", label: [{
-            x: 0, y: 0, width: 160,
-            classname: 'Relationship',
-            attributes: [
-                'follower : User',
-                'followed : User'
-            ]
-        }], labelType: "lazySvg", labelFn: createLabel});
-    g.setEdge("user", "rect", {arrowhead: "hollowPoint"});
-    g.setEdge("Micropost", "user", {arrowhead: "hollowPoint"});
-    g.setEdge("user", "RelationShip", {arrowhead: "hollowPoint"});
+    var user = processClassNodeInfo({
+        x: 0, y: 0, width: 260,
+        classname: 'User',
+        attributes: [
+            'microposts: Array[Micropost]',
+            'relationships: Array[Relationship]',
+            'followed_users: Array[User]',
+            'reversed_relationships: Array[Relationship]',
+            'followers: Array[User]',
+        ]
+    });
+
+    var micropost = processClassNodeInfo({
+        x: 0, y: 0, width: 140,
+        classname: 'Micropost',
+        attributes: [
+            'user: User',
+            'content: string',
+            'id: integer'
+        ],
+        methods: [
+            'hello: int'
+        ]
+    });
+
+    var relationShip = processClassNodeInfo({
+        x: 0, y: 0, width: 160,
+        classname: 'Relationship',
+        attributes: [
+            'follower : User',
+            'followed : User'
+        ]
+    });
+
+    g.setNode(user.nodeName, user.value);
+    g.setNode(micropost.nodeName, micropost.value);
+    g.setNode(relationShip.nodeName, relationShip.value);
+
+    g.setEdge(micropost.nodeName, user.nodeName, {arrowhead: "hollowPoint"});
+    g.setEdge(user.nodeName, relationShip.nodeName, {arrowhead: "hollowPoint"});
+    g.setEdge(micropost.nodeName, relationShip.nodeName, {arrowhead: "hollowPoint"});
 
     var svg = d3.select("svg"),
         inner = svg.select("g");
 
-// Set up zoom support
+    // Set up zoom support
     var zoom = d3.zoom().on("zoom", function () {
         inner.attr("transform", d3.event.transform);
     });
     svg.call(zoom);
 
-// Create the renderer
+    // Create the renderer
     var render = new dagreD3.render();
 
-// Add our custom shape (a house)
+    // Add our custom shape (a house)
     render.shapes().house = function (parent, bbox, node) {
         var w = bbox.width,
             h = bbox.height,
@@ -125,107 +140,14 @@ function component1() {
 }
 
 // document.body.appendChild(component())
-var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-svg1.setAttribute("height", "509")
-svg1.setAttribute("width", "960")
-document.body.appendChild(svg1)
-var g = document.createElementNS("http://www.w3.org/2000/svg", "g")
+var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+svg1.setAttribute("height", "509");
+svg1.setAttribute("width", "960");
+document.body.appendChild(svg1);
+var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
 svg1.appendChild(g);
 // document.body.appendChild(document.createElement("svg"));
 component1();
-
-// var svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-// document.body.appendChild(svg2)
-// svg2.setAttribute("id", "d3-class-diagram")
-
-
-//
-// var svg3 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-// document.body.appendChild(svg3)
-// svg3.setAttribute("height", "240")
-// svg3.setAttribute("width", "940")
-// svg3.setAttribute("id", "diagram")
-//
-// var svg = d3.select("#diagram")
-// const classDiagram = new d3.ClassDiagram(d3, svg);
-//
-// classDiagram.addMarkers(svg.append('defs'));
-//
-// var classes = [
-//     {
-//         x: 240, y: 20, width: 260,
-//         classname: 'User',
-//         attributes: [
-//             'microposts: Array[Micropost]',
-//             'relationships: Array[Relationship]',
-//             'followed_users: Array[User]',
-//             'reversed_relationships: Array[Relationship]',
-//             'followers: Array[User]',
-//         ]
-//     },
-//     {
-//         x: 560, y: 20, width: 140,
-//         classname: 'Micropost',
-//         attributes: [
-//             'user: User',
-//             'content: string',
-//             'id: integer'
-//         ],
-//         methods: [
-//             'hello: int'
-//         ]
-//     },
-//     {
-//         x: 40, y: 20, width: 160,
-//         classname: 'Relationship',
-//         attributes: [
-//             'follower : User',
-//             'followed : User'
-//         ]
-//     }
-// ];
-//
-// var boxes = classDiagram.createClasses(classes);
-// svg.selectAll('text').attr('font-family', 'Noto Sans Japanese');
-//
-// var connectors = [
-//     {
-//         points: [
-//             {x: boxes.User.rightX(), y: boxes.Micropost.midY()},
-//             {x: boxes.Micropost.x, y: boxes.Micropost.midY()}
-//         ],
-//         markerEnd: 'arrowhead'
-//     },
-//     {
-//         points: [
-//             {x: boxes.Relationship.rightX(), y: boxes.User.midY()},
-//             {x: boxes.User.x, y: boxes.User.midY()}
-//         ],
-//         markerEnd: 'filledDiamond'
-//     },
-//     {
-//         points: [
-//             {x: boxes.User.x, y: boxes.User.bottomY() - 20},
-//             {x: boxes.User.x - 20, y: boxes.User.bottomY() - 20},
-//             {x: boxes.User.x - 20, y: boxes.User.bottomY() + 20},
-//             {x: boxes.User.x + 20, y: boxes.User.bottomY() + 20},
-//             {x: boxes.User.x + 20, y: boxes.User.bottomY()}
-//         ],
-//         markerEnd: 'diamond'
-//     },
-//     {
-//         points: [
-//             {x: boxes.User.rightX(), y: boxes.User.bottomY() - 20},
-//             {x: boxes.User.rightX() + 20, y: boxes.User.bottomY() - 20},
-//             {x: boxes.User.rightX() + 20, y: boxes.User.bottomY() + 20},
-//             {x: boxes.User.rightX() - 20, y: boxes.User.bottomY() + 20},
-//             {x: boxes.User.rightX() - 20, y: boxes.User.bottomY()}
-//         ],
-//         markerEnd: 'diamond'
-//     }
-// ];
-//
-// classDiagram.createConnectors(connectors);
 
 
 if (module.hot) {
