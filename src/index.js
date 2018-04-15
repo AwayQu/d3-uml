@@ -46,24 +46,10 @@ var adjustHeight = function (rects, texts, paddingTop, paddingBottom) {
     }
 }
 
-function createLabel(root, data) {
-
-    var classes = [
-        {
-            x: 0, y: 0, width: 260,
-            classname: 'User',
-            attributes: [
-                'microposts: Array[Micropost]',
-                'relationships: Array[Relationship]',
-                'followed_users: Array[User]',
-                'reversed_relationships: Array[Relationship]',
-                'followers: Array[User]',
-            ]
-        }
-    ];
+function createLabel(root, classes) {
 
     var svg = d3.select(root).append("svg")
-    // use of svg
+    // how use of svg selectAll
     var g =  svg.selectAll("g.class").data(classes).enter().append('g')
         .attrs({
             id: function (d) {
@@ -106,6 +92,7 @@ function createLabel(root, data) {
                 return d.classname;
             })
         );
+
 
 
     adjustHeight(classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
@@ -205,9 +192,43 @@ function component1() {
 // Create a new directed graph
     var g = new dagreD3.graphlib.Graph().setGraph({});
 
-    g.setNode("house", {shape: "rect", label: "test", labelType: "lazySvg", labelFn:createLabel});
+    g.setNode("user", {shape: "rect", label: [
+            {
+                x: 0, y: 0, width: 260,
+                classname: 'User',
+                attributes: [
+                    'microposts: Array[Micropost]',
+                    'relationships: Array[Relationship]',
+                    'followed_users: Array[User]',
+                    'reversed_relationships: Array[Relationship]',
+                    'followers: Array[User]',
+                ]
+            }
+        ], labelType: "lazySvg", labelFn:createLabel});
     g.setNode("rect", {shape: "rect"});
-    g.setEdge("house", "rect", {arrowhead: "hollowPoint"});
+    g.setNode("Micropost", {shape: "rect", labelType: "lazySvg", label: [{
+            x: 0, y: 0, width: 140,
+            classname: 'Micropost',
+            attributes: [
+                'user: User',
+                'content: string',
+                'id: integer'
+            ],
+            methods: [
+                'hello: int'
+            ]
+        }], labelFn: createLabel});
+    g.setNode("RelationShip", {shape: "rect", label: [{
+            x: 0, y: 0, width: 160,
+            classname: 'Relationship',
+            attributes: [
+                'follower : User',
+                'followed : User'
+            ]
+        }], labelType: "lazySvg", labelFn: createLabel});
+    g.setEdge("user", "rect", {arrowhead: "hollowPoint"});
+    g.setEdge("Micropost", "user", {arrowhead: "hollowPoint"});
+    g.setEdge("user", "RelationShip", {arrowhead: "hollowPoint"});
 
     var svg = d3.select("svg"),
         inner = svg.select("g");
