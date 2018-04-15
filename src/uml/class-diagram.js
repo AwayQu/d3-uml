@@ -1,3 +1,9 @@
+function Context(d3, svg) {
+    this.svg = svg;
+    this.d3 = d3;
+}
+
+
 function Box(x, y, width, height) {
     this.x = x;
     this.y = y;
@@ -21,13 +27,14 @@ Box.prototype.bottomY = function () {
 function ClassDiagram(d3, svg) {
     this.d3 = d3;
     this.svg = svg;
+    this.ctx = new Context(d3, svg);
 }
 
 ClassDiagram.Box = Box;
 
-ClassDiagram.prototype.createConnectors = function (connectors) {
-    const d3 = this.d3;
-    const svg = this.svg;
+function _createConnectors(ctx, connectors) {
+    const d3 = ctx.d3;
+    const svg = ctx.svg;
     const line = d3.line()
         .x(function (d) {
             return d.x;
@@ -63,11 +70,11 @@ ClassDiagram.prototype.createConnectors = function (connectors) {
             },
             'stroke-dashoffset': 0
         });
-};
+}
 
-ClassDiagram.prototype.createClasses = function (classes) {
-    const d3 = this.d3;
-    const svg = this.svg;
+function _createClasses(ctx, classes) {
+    const d3 = ctx.d3;
+    const svg = ctx.svg;
     var g = svg.selectAll('g.class')
         .data(classes).enter().append('g')
         .attrs({
@@ -113,7 +120,7 @@ ClassDiagram.prototype.createClasses = function (classes) {
         );
 
 
-    this.adjustHeight(classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
+    ClassDiagram._adjustHeight(ctx, classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
 
 
     var attributesG = g.append('g')
@@ -145,7 +152,7 @@ ClassDiagram.prototype.createClasses = function (classes) {
             .paddingTop(4)
             .paddingLeft(4)
         );
-    this.adjustHeight(attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
+    ClassDiagram._adjustHeight(ctx, attributesRects.nodes(), attributesTexts.nodes(), 4, 4);
 
     var methodsG = g.append('g')
         .attrs({
@@ -178,7 +185,7 @@ ClassDiagram.prototype.createClasses = function (classes) {
             .paddingTop(4)
             .paddingLeft(4)
         );
-    this.adjustHeight(methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
+    ClassDiagram._adjustHeight(ctx, methodsRects.nodes(), methodsTexts.nodes(), 4, 4);
 
     svg.selectAll('g.class')
         .each(function (d, i) {
@@ -206,8 +213,8 @@ ClassDiagram.prototype.createClasses = function (classes) {
 
 }
 
-ClassDiagram.prototype.adjustHeight = function (rects, texts, paddingTop, paddingBottom) {
-    const d3 = this.d3;
+function _adjustHeight(ctx, rects, texts, paddingTop, paddingBottom) {
+    const d3 = ctx.d3;
     var i, rect, text, height;
     for (i = 0; i < rects.length; i++) {
         rect = rects[i];
@@ -217,7 +224,7 @@ ClassDiagram.prototype.adjustHeight = function (rects, texts, paddingTop, paddin
     }
 }
 
-ClassDiagram.prototype.addMarkers = function (defs) {
+function _addMarkers(defs) {
     console.log(defs);
     var a = defs.append('marker');
     console.log(a);
@@ -310,7 +317,28 @@ ClassDiagram.prototype.addMarkers = function (defs) {
         });
 }
 
+ClassDiagram._createConnectors = _createConnectors;
+ClassDiagram._createClasses = _createClasses;
+ClassDiagram._adjustHeight = _adjustHeight;
+ClassDiagram._addMarkers = _addMarkers;
+
+
+ClassDiagram.prototype.createConnectors = function (connectors) {
+    ClassDiagram._createConnectors(this.ctx, connectors);
+
+};
+ClassDiagram.prototype.createClasses = function (classes) {
+    ClassDiagram._createClasses(this.ctx, classes);
+};
+ClassDiagram.prototype.adjustHeight = function (rects, texts, paddingTop, paddingBottom) {
+    ClassDiagram._adjustHeight(this.ctx, rects, texts, paddingTop, paddingBottom);
+};
+ClassDiagram.prototype.addMarkers = function (defs) {
+    ClassDiagram._addMarkers(defs);
+};
 
 export {
-    ClassDiagram
-};
+    ClassDiagram,
+    Context
+}
+
