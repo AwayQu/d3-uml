@@ -41,15 +41,16 @@ var adjustHeight = function (rects, texts, paddingTop, paddingBottom) {
         rect = rects[i];
         text = texts[i];
         height = text.getBBox().height + paddingTop + paddingBottom;
+        console.log(text.getBBox().height)
         d3.select(rect).attrs({'height': height});
     }
 }
 
-function createLabel() {
+function createLabel(root, data) {
 
     var classes = [
         {
-            x: 240, y: 20, width: 260,
+            x: 0, y: 0, width: 260,
             classname: 'User',
             attributes: [
                 'microposts: Array[Micropost]',
@@ -61,9 +62,9 @@ function createLabel() {
         }
     ];
 
-    var svg = d3.create("svg");
-    var g =  svg.selectAll('g.class')
-        .data(classes).enter().append('g')
+    var svg = d3.select(root).append("svg")
+    // use of svg
+    var g =  svg.selectAll("g.class").data(classes).enter().append('g')
         .attrs({
             id: function (d) {
                 return d.classname + 'Class';
@@ -204,7 +205,7 @@ function component1() {
 // Create a new directed graph
     var g = new dagreD3.graphlib.Graph().setGraph({});
 
-    g.setNode("house", {shape: "house", label: createLabel(), labelType: "svg"});
+    g.setNode("house", {shape: "rect", label: "test", labelType: "lazySvg", labelFn:createLabel});
     g.setNode("rect", {shape: "rect"});
     g.setEdge("house", "rect", {arrowhead: "hollowPoint"});
 
