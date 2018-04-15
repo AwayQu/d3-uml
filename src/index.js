@@ -25,6 +25,21 @@ function processClassNodeInfo(classInfo) {
     }
 }
 
+/**
+ * input
+ * classInfos {
+ *  name :
+ *  attributes:
+ *  methods:
+ *  identify:
+ * }
+ * relationShips {
+ *  from : identify
+ *  to : identify
+ *  type: (relationShip)
+ * }
+ */
+
 function component1() {
 // Create a new directed graph
     var g = new dagreD3.graphlib.Graph().setGraph({});
