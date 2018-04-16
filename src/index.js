@@ -11,6 +11,7 @@ import {
     _arrowAggregation, _arrowAssociation, _arrowComposition, _arrowDependency, _arrowGeneralization,
     _arrowRealization
 } from "./uml/class-diagram-relationship";
+import {ClassDiagramGraph, ClassDiagramRender} from "./uml/uml";
 
 
 
@@ -32,7 +33,7 @@ import {
 
 function component1() {
 // Create a new directed graph
-    var g = new dagreD3.graphlib.Graph().setGraph({});
+    var g = new ClassDiagramGraph().setGraph({});
 
     var o2 = {
        x: 0, y: 0, width: 260,
@@ -153,7 +154,7 @@ function component1() {
     svg.call(zoom);
 
     // Create the renderer
-    var render = new dagreD3.render();
+    var render = new ClassDiagramRender();
 
     render(inner, g);
 
