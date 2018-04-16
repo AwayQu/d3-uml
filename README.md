@@ -32,4 +32,4 @@ height 需要先根据 tspan 字体大小和 padding 计算出 Text Height，
 
 [ x ] 关系 的 虚线实线
 
-[ x ] 多余框框去除
+[ x ] 多余框框去除 {完成}

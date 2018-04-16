@@ -24,7 +24,11 @@ function processClassNodeInfo(classInfo) {
             shape: "rect",
             label: [classInfo],
             labelType: "lazySvg",
-            labelFn: createLabel
+            labelFn: createLabel,
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0
         }
     }
 }
