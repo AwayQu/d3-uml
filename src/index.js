@@ -4,7 +4,7 @@ import Icon from './favicon.ico';
 import printMe from './print.js';
 import * as dagreD3 from "./uml/dagre-d3";
 import {d3} from "./uml/d3"
-import {ClassDiagram, Context} from "./uml/class-diagram";
+import {ClassDiagram, Context} from "./uml/class-diagram-node";
 
 import * as d3Selection from "d3-selection-multi"
 import {

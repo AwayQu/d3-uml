@@ -10,7 +10,7 @@
  *
  * http://www.uml.org.cn/oobject/201610282.asp
  */
-import {ClassDiagram} from "./class-diagram";
+import {ClassDiagram} from "./class-diagram-node";
 import * as dagreD3 from "dagre-d3";
 
 

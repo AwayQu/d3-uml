@@ -3,7 +3,7 @@ import * as d3Selection from "d3-selection-multi"
 
 import {
     ClassDiagram
-} from './class-diagram'
+} from './class-diagram-node'
 import multilineText from './multiline-text'
 
 d3.ClassDiagram = ClassDiagram

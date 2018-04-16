@@ -1,4 +1,4 @@
-import {ClassDiagram, Context} from "./class-diagram";
+import {ClassDiagram, Context} from "./class-diagram-node";
 import {
     _arrowAggregation, _arrowAssociation, _arrowComposition, _arrowDependency, _arrowGeneralization,
     _arrowRealization
