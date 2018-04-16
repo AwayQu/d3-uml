@@ -2,7 +2,7 @@ import _ from 'lodash';
 import './style.css';
 import Icon from './favicon.ico';
 import printMe from './print.js';
-import * as dagreD3 from "dagre-d3";
+import * as dagreD3 from "./uml/dagre-d3";
 import {d3} from "./uml/d3"
 import {ClassDiagram, Context} from "./uml/class-diagram";
 
@@ -13,25 +13,7 @@ import {
 } from "./uml/class-diagram-relationship";
 
 
-function createLabel(root, classes) {
-    ClassDiagram._createClasses(new Context(d3, d3.select(root).append("svg")), classes)
-}
 
-function processClassNodeInfo(classInfo) {
-    return {
-        nodeName: classInfo.classname,
-        value: {
-            shape: "rect",
-            label: [classInfo],
-            labelType: "lazySvg",
-            labelFn: createLabel,
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0
-        }
-    }
-}
 
 /**
  * input
@@ -52,114 +34,114 @@ function component1() {
 // Create a new directed graph
     var g = new dagreD3.graphlib.Graph().setGraph({});
 
-    var o2 = processClassNodeInfo({
+    var o2 = {
        x: 0, y: 0, width: 260,
        classname: "氧气",
-    });
-    var animals = processClassNodeInfo({
+    };
+    var animals = {
         x: 0, y: 0, width: 260,
         classname: "动物",
         attributes: ["生命"],
         methods:["新城代谢", "繁殖"]
-    });
+    };
 
-    var water = processClassNodeInfo({
+    var water = {
         x: 0, y: 0, width: 260,
         classname: "水",
-    });
+    };
 
-    var bird = processClassNodeInfo({
+    var bird = {
         x: 0, y: 0, width: 260,
         classname: "鸟",
         attributes: ["羽毛"],
         methods: ["下蛋"]
-    });
+    };
 
-    var chibasa = processClassNodeInfo({
+    var chibasa = {
         x: 0, y: 0, width: 260,
         classname: "翅膀",
-    });
+    };
 
-    var fly = processClassNodeInfo({
+    var fly = {
         x: 0, y: 0, width: 260,
         classname: "飞翔",
-    });
+    };
 
-    var dayan = processClassNodeInfo({
+    var dayan = {
         x: 0, y: 0, width: 260,
         classname: "大雁",
         methods: ["下蛋", "飞"]
-    });
+    };
 
-    var duck = processClassNodeInfo({
+    var duck = {
         x: 0, y: 0, width: 260,
         classname: "鸭子",
         methods: ["下蛋"]
-    });
+    };
 
 
-    var qie = processClassNodeInfo({
+    var qie = {
         x: 0, y: 0, width: 260,
         classname: "企鹅",
         methods: ["下蛋"]
-    });
+    };
 
 
-    var yanqun = processClassNodeInfo({
+    var yanqun = {
         x: 0, y: 0, width: 260,
         classname: "雁群",
-    });
+    };
 
 
-    var tanglaoya = processClassNodeInfo({
+    var tanglaoya = {
         x: 0, y: 0, width: 260,
         classname: "唐老鸭",
         methods: ["说话"]
-    });
+    };
 
 
-    var shuohua = processClassNodeInfo({
+    var shuohua = {
         x: 0, y: 0, width: 260,
         classname: "讲话",
         methods: ["说话"]
-    });
+    };
 
 
-    var qihou = processClassNodeInfo({
+    var qihou = {
         x: 0, y: 0, width: 260,
         classname: "气候",
-    });
+    };
 
 
 
 
 
-    g.setNode(o2.nodeName, o2.value);
-    g.setNode(animals.nodeName, animals.value);
-    g.setNode(water.nodeName, water.value);
-    g.setNode(bird.nodeName, bird.value);
-    g.setNode(chibasa.nodeName, chibasa.value);
-    g.setNode(fly.nodeName, fly.value);
-    g.setNode(dayan.nodeName, dayan.value);
-    g.setNode(duck.nodeName, duck.value);
-    g.setNode(qie.nodeName, qie.value);
-    g.setNode(yanqun.nodeName, yanqun.value);
-    g.setNode(tanglaoya.nodeName, tanglaoya.value);
-    g.setNode(shuohua.nodeName, shuohua.value);
-    g.setNode(qihou.nodeName, qihou.value);
+    g.setClassDiagramNode(o2);
+    g.setClassDiagramNode(animals);
+    g.setClassDiagramNode(water);
+    g.setClassDiagramNode(bird);
+    g.setClassDiagramNode(chibasa);
+    g.setClassDiagramNode(fly);
+    g.setClassDiagramNode(dayan);
+    g.setClassDiagramNode(duck);
+    g.setClassDiagramNode(qie);
+    g.setClassDiagramNode(yanqun);
+    g.setClassDiagramNode(tanglaoya);
+    g.setClassDiagramNode(shuohua);
+    g.setClassDiagramNode(qihou);
 
-    g.setEdge(animals.nodeName, o2.nodeName, {arrowhead: "dependencyPoint"});
-    g.setEdge(animals.nodeName, water.nodeName, {arrowhead: "generalizationPoint"});
-    g.setEdge(bird.nodeName, animals.nodeName, {arrowhead: "realizationPoint"});
-    g.setEdge(bird.nodeName, chibasa.nodeName, {arrowhead: "compositionPoint"});
-    g.setEdge(dayan.nodeName, bird.nodeName, {arrowhead: "generalizationPoint"});
-    g.setEdge(duck.nodeName, bird.nodeName, {arrowhead: "generalizationPoint"});
-    g.setEdge(qie.nodeName, bird.nodeName, {arrowhead: "generalizationPoint"});
-    g.setEdge(dayan.nodeName, fly.nodeName, {arrowhead: "realizationPoint"});
-    g.setEdge(yanqun.nodeName, dayan.nodeName, {arrowhead: "aggregationPoint"});
-    g.setEdge(tanglaoya.nodeName, duck.nodeName, {arrowhead: "realizationPoint"});
-    g.setEdge(tanglaoya.nodeName, shuohua.nodeName, {arrowhead: "realizationPoint"});
-    g.setEdge(qie.nodeName, qihou.nodeName, {arrowhead: "dependencyPoint"});
+    g.setEdge(animals.classname, o2.classname, {arrowhead: "dependencyPoint"});
+    g.setEdge(animals.classname, water.classname, {arrowhead: "generalizationPoint"});
+    g.setEdge(bird.classname, animals.classname, {arrowhead: "realizationPoint"});
+    g.setEdge(bird.classname, chibasa.classname, {arrowhead: "compositionPoint"});
+    g.setEdge(dayan.classname, bird.classname, {arrowhead: "generalizationPoint"});
+    g.setEdge(duck.classname, bird.classname, {arrowhead: "generalizationPoint"});
+    g.setEdge(qie.classname, bird.classname, {arrowhead: "generalizationPoint"});
+    g.setEdge(dayan.classname, fly.classname, {arrowhead: "realizationPoint"});
+    g.setEdge(yanqun.classname, dayan.classname, {arrowhead: "aggregationPoint"});
+    g.setEdge(tanglaoya.classname, duck.classname, {arrowhead: "realizationPoint"});
+    g.setEdge(tanglaoya.classname, shuohua.classname, {arrowhead: "realizationPoint"});
+    g.setEdge(qie.classname, qihou.classname, {arrowhead: "dependencyPoint"});
 
     var svg = d3.select("svg"),
         inner = svg.select("g");
@@ -173,37 +155,6 @@ function component1() {
     // Create the renderer
     var render = new dagreD3.render();
 
-    // Add our custom shape (a house)
-    render.shapes().house = function (parent, bbox, node) {
-        var w = bbox.width,
-            h = bbox.height,
-            points = [
-                {x: 0, y: 0},
-                {x: w, y: 0},
-                {x: w, y: -h},
-                {x: w / 2, y: -h * 3 / 2},
-                {x: 0, y: -h}
-            ];
-        var shapeSvg = parent.insert("polygon", ":first-child")
-            .attr("points", points.map(function (d) {
-                return d.x + "," + d.y;
-            }).join(" "))
-            .attr("transform", "translate(" + (-w / 2) + "," + (h * 3 / 4) + ")");
-
-        node.intersect = function (point) {
-            return dagreD3.intersect.polygon(node, points, point);
-        };
-
-        return shapeSvg;
-    };
-
-    render.arrows().generalizationPoint = _arrowGeneralization;
-    render.arrows().realizationPoint = _arrowRealization;
-    render.arrows().associationPoint = _arrowAssociation;
-    render.arrows().aggregationPoint = _arrowAggregation;
-    render.arrows().compositionPoint = _arrowComposition;
-    render.arrows().dependencyPoint = _arrowDependency;
-// Run the renderer. This is what draws the final graph.
     render(inner, g);
 
 // Center the graph
