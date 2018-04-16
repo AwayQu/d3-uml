@@ -7,6 +7,10 @@ import {d3} from "./uml/d3"
 import {ClassDiagram, Context} from "./uml/class-diagram";
 
 import * as d3Selection from "d3-selection-multi"
+import {
+    _arrowAggregation, _arrowAssociation, _arrowComposition, _arrowDependency, _arrowGeneralization,
+    _arrowRealization
+} from "./uml/class-diagram-relationship";
 
 
 function createLabel(root, classes) {
@@ -82,9 +86,9 @@ function component1() {
     g.setNode(micropost.nodeName, micropost.value);
     g.setNode(relationShip.nodeName, relationShip.value);
 
-    g.setEdge(micropost.nodeName, user.nodeName, {arrowhead: "hollowPoint"});
-    g.setEdge(user.nodeName, relationShip.nodeName, {arrowhead: "hollowPoint"});
-    g.setEdge(micropost.nodeName, relationShip.nodeName, {arrowhead: "hollowPoint"});
+    g.setEdge(micropost.nodeName, user.nodeName, {arrowhead: "compositionPoint"});
+    g.setEdge(user.nodeName, relationShip.nodeName, {arrowhead: "aggregationPoint"});
+    g.setEdge(micropost.nodeName, relationShip.nodeName, {arrowhead: "associationPoint"});
 
     var svg = d3.select("svg"),
         inner = svg.select("g");
@@ -142,7 +146,12 @@ function component1() {
             .style("stroke", "#333");
         dagreD3.util.applyStyle(path, edge[type + "Style"]);
     };
-
+    render.arrows().generalizationPoint = _arrowGeneralization;
+    render.arrows().realizationPoint = _arrowRealization;
+    render.arrows().associationPoint = _arrowAssociation;
+    render.arrows().aggregationPoint = _arrowAggregation;
+    render.arrows().compositionPoint = _arrowComposition;
+    render.arrows().dependencyPoint = _arrowDependency;
 // Run the renderer. This is what draws the final graph.
     render(inner, g);
 
