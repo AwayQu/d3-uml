@@ -8,12 +8,10 @@ import {ClassDiagram, Context} from "./uml/class-diagram-node";
 
 import * as d3Selection from "d3-selection-multi"
 import {
-    _arrowAggregation, _arrowAssociation, _arrowComposition, _arrowDependency, _arrowGeneralization,
-    _arrowRealization
+    _arrowAggregationHead, _arrowAssociationHead, _arrowCompositionHead, _arrowDependencyHead, _arrowGeneralizationHead,
+    _arrowRealizationHead, Aggregation, Association, Composition, Dependency, Generalization, Realization
 } from "./uml/class-diagram-relationship";
 import {ClassDiagramGraph, ClassDiagramRender} from "./uml/uml";
-
-
 
 
 /**
@@ -36,14 +34,14 @@ function component1() {
     var g = new ClassDiagramGraph().setGraph({});
 
     var o2 = {
-       x: 0, y: 0, width: 260,
-       classname: "氧气",
+        x: 0, y: 0, width: 260,
+        classname: "氧气",
     };
     var animals = {
         x: 0, y: 0, width: 260,
         classname: "动物",
         attributes: ["生命"],
-        methods:["新城代谢", "繁殖"]
+        methods: ["新城代谢", "繁殖"]
     };
 
     var water = {
@@ -114,9 +112,6 @@ function component1() {
     };
 
 
-
-
-
     g.setClassDiagramNode(o2);
     g.setClassDiagramNode(animals);
     g.setClassDiagramNode(water);
@@ -131,18 +126,18 @@ function component1() {
     g.setClassDiagramNode(shuohua);
     g.setClassDiagramNode(qihou);
 
-    g.setEdge(animals.classname, o2.classname, {arrowhead: "dependencyPoint"});
-    g.setEdge(animals.classname, water.classname, {arrowhead: "generalizationPoint"});
-    g.setEdge(bird.classname, animals.classname, {arrowhead: "realizationPoint"});
-    g.setEdge(bird.classname, chibasa.classname, {arrowhead: "compositionPoint"});
-    g.setEdge(dayan.classname, bird.classname, {arrowhead: "generalizationPoint"});
-    g.setEdge(duck.classname, bird.classname, {arrowhead: "generalizationPoint"});
-    g.setEdge(qie.classname, bird.classname, {arrowhead: "generalizationPoint"});
-    g.setEdge(dayan.classname, fly.classname, {arrowhead: "realizationPoint"});
-    g.setEdge(yanqun.classname, dayan.classname, {arrowhead: "aggregationPoint"});
-    g.setEdge(tanglaoya.classname, duck.classname, {arrowhead: "realizationPoint"});
-    g.setEdge(tanglaoya.classname, shuohua.classname, {arrowhead: "realizationPoint"});
-    g.setEdge(qie.classname, qihou.classname, {arrowhead: "dependencyPoint"});
+    g.setEdge(animals.classname, o2.classname, Dependency());
+    g.setEdge(animals.classname, water.classname, Generalization());
+    g.setEdge(bird.classname, animals.classname, Realization());
+    g.setEdge(bird.classname, chibasa.classname, Composition());
+    g.setEdge(dayan.classname, bird.classname, Generalization());
+    g.setEdge(duck.classname, bird.classname, Generalization());
+    g.setEdge(qie.classname, bird.classname, Generalization());
+    g.setEdge(dayan.classname, fly.classname, Realization());
+    g.setEdge(yanqun.classname, dayan.classname, Aggregation());
+    g.setEdge(tanglaoya.classname, duck.classname, Realization());
+    g.setEdge(tanglaoya.classname, shuohua.classname, Realization());
+    g.setEdge(qie.classname, qihou.classname, Association());
 
     var svg = d3.select("svg"),
         inner = svg.select("g");

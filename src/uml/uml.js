@@ -1,7 +1,9 @@
 import {ClassDiagram, Context} from "./class-diagram-node";
 import {
-    _arrowAggregation, _arrowAssociation, _arrowComposition, _arrowDependency, _arrowGeneralization,
-    _arrowRealization
+    _arrowAggregationHead, _arrowAggregationTail, _arrowAssociationHead, _arrowCompositionHead, _arrowCompositionTail,
+    _arrowDependencyHead,
+    _arrowGeneralizationHead,
+    _arrowRealizationHead
 } from "./class-diagram-relationship";
 import * as dagreD3 from "dagre-d3";
 import {d3} from "./d3";
@@ -39,12 +41,14 @@ const previousRender = dagreD3.render;
 
 function ClassDiagramRender() {
     const r = new previousRender();
-    r.arrows().generalizationPoint = _arrowGeneralization;
-    r.arrows().realizationPoint = _arrowRealization;
-    r.arrows().associationPoint = _arrowAssociation;
-    r.arrows().aggregationPoint = _arrowAggregation;
-    r.arrows().compositionPoint = _arrowComposition;
-    r.arrows().dependencyPoint = _arrowDependency;
+    r.arrows().GeneralizationHead = _arrowGeneralizationHead;
+    r.arrows().RealizationHead = _arrowRealizationHead;
+    r.arrows().AssociationHead = _arrowAssociationHead;
+    r.arrows().AggregationHead = _arrowAggregationHead;
+    r.arrows().AggregationTail = _arrowAggregationTail;
+    r.arrows().CompositionHead = _arrowCompositionHead;
+    r.arrows().DependencyHead = _arrowDependencyHead;
+    r.arrows().CompositionTail = _arrowCompositionTail;
 
     return r
 }
