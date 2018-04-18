@@ -8,8 +8,7 @@ import {ClassDiagram, Context} from "./uml/class-diagram-node";
 
 import * as d3Selection from "d3-selection-multi"
 import {
-    _arrowAggregationHead, _arrowAssociationHead, _arrowCompositionHead, _arrowDependencyHead, _arrowGeneralizationHead,
-    _arrowRealizationHead, Aggregation, Association, Composition, Dependency, Generalization, Realization
+    Aggregation, Association, Composition, Dependency, Generalization, Realization
 } from "./uml/class-diagram-relationship";
 import {ClassDiagramGraph, ClassDiagramRender} from "./uml/uml";
 

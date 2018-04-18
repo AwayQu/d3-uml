@@ -1,3 +1,5 @@
+import multilineText from './multiline-text'
+
 function Context(d3, svg) {
     this.svg = svg;
     this.d3 = d3;
@@ -110,7 +112,7 @@ function _createClasses(ctx, classes) {
         });
     var classNameTexts = classNameG.append('text')
         .attrs({'font-size': 12})
-        .call(d3.multilineText()
+        .call(multilineText()
             .verticalAlign('top')
             .paddingTop(4)
             .paddingBottom(4)
@@ -143,7 +145,7 @@ function _createClasses(ctx, classes) {
         });
     var attributesTexts = attributesG.append('text')
         .attrs({'font-size': 12})
-        .call(d3.multilineText()
+        .call(multilineText()
             .text(function (d) {
                 return d.attributes;
             })
@@ -176,7 +178,7 @@ function _createClasses(ctx, classes) {
         });
     var methodsTexts = methodsG.append('text')
         .attrs({'font-size': 12})
-        .call(d3.multilineText()
+        .call(multilineText()
             .text(function (d) {
                 return d.methods;
             })
