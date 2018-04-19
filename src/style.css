@@ -41,7 +41,7 @@ body {
 }
 
 .node rect,
-.node circle,
+.node circle
 .node ellipse,
 .node polygon {
     stroke: #333;

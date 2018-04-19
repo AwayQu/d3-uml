@@ -237,6 +237,23 @@ function Dependency() {
     }
 }
 
+function Relation(name) {
+    if (name === "Generalization") {
+        return Generalization();
+    } else if (name === "Realization") {
+        return Realization();
+    } else if (name === "Association") {
+        return Association();
+    } else if (name === "Aggregation") {
+        return Aggregation();
+    } else if (name === "Composition") {
+        return Composition();
+    } else if (name === "Dependency") {
+        return Dependency();
+    } else {
+        return {}
+    }
+}
 
 export {
     _arrowGeneralizationHead,
@@ -253,4 +270,5 @@ export {
     Aggregation,
     Composition,
     Dependency,
+    Relation
 }

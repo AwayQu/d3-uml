@@ -15,7 +15,7 @@ function createLabel(root, classes) {
 
 function processClassNodeInfo(classInfo) {
     return {
-        nodeName: classInfo.classname,
+        nodeName: classInfo.identify,
         value: {
             shape: "rect",
             label: [classInfo],
