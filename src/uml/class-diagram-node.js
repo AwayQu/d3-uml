@@ -123,8 +123,20 @@ function _createClasses(ctx, classes) {
 
 
     ClassDiagram._adjustHeight(ctx, classNameRects.nodes(), classNameTexts.nodes(), 4, 4);
-
-
+    function fil(n) {
+        if (n.fold === true) {
+            return false;
+        } else {
+            return true
+        }
+    }
+    function sliceTooLong(v, i, array) {
+        if (v.length > 30) {
+            return v.substring(0, 29) + '...';
+        } else {
+            return v
+        }
+    }
     var attributesG = g.append('g')
         .attrs({
             'class': 'attributes',
@@ -134,7 +146,7 @@ function _createClasses(ctx, classes) {
                 return 'translate(0,' + height + ')';
             }
         });
-    var attributesRects = attributesG.append('rect')
+    var attributesRects = attributesG.filter(fil).append('rect')
         .attrs({
             'width': function (d) {
                 return d.width;
@@ -143,11 +155,15 @@ function _createClasses(ctx, classes) {
             'stroke': 'black',
             'stroke-width': 1
         });
-    var attributesTexts = attributesG.append('text')
+    var attributesTexts = attributesG.filter(fil).append('text')
         .attrs({'font-size': 12})
         .call(multilineText()
             .text(function (d) {
-                return d.attributes;
+                if (d.foldAttribute) {
+                    return []
+                } else {
+                    return d.attributes.map(sliceTooLong)
+                }
             })
             .verticalAlign('top')
             .horizontalAlign('left')
@@ -167,7 +183,7 @@ function _createClasses(ctx, classes) {
                 return 'translate(0,' + (classNameBBox.height + attributesBBox.height) + ')';
             }
         });
-    var methodsRects = methodsG.append('rect')
+    var methodsRects = methodsG.filter(fil).append('rect')
         .attrs({
             'width': function (d) {
                 return d.width;
@@ -176,11 +192,15 @@ function _createClasses(ctx, classes) {
             'stroke': 'black',
             'stroke-width': 1
         });
-    var methodsTexts = methodsG.append('text')
+    var methodsTexts = methodsG.filter(fil).append('text')
         .attrs({'font-size': 12})
         .call(multilineText()
             .text(function (d) {
-                return d.methods;
+                if (d.foldMethod) {
+                    return [];
+                } else {
+                    return d.methods.map(sliceTooLong);
+                }
             })
             .verticalAlign('top')
             .horizontalAlign('left')
