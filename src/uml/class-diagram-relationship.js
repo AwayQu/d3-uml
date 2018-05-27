@@ -26,7 +26,7 @@ function leftArrow(parent, id, edge, type) {
     const path = marker.append("path")
         .attr("d", "M0 5 10 10 10 8.7 3.2 5.5 10 5.5 10 4.5 3.2 4.5 10 1.3 10 0Z")
         .attr("stroke", "none")
-        .attr("fill", "white");
+        .attr("fill", "black");
     dagreD3.util.applyStyle(path, edge[type + "Style"]);
 }
 
@@ -44,7 +44,7 @@ function rightArrow(parent, id, edge, type) {
     const path = marker.append("path")
         .attr("d", "M10 5 0 10 0 8.7 6.8 5.5 0 5.5 0 4.5 6.8 4.5 0 1.3 0 0Z")
         .attr("stroke", "none")
-        .attr("fill", "white");
+        .attr("fill", "black");
     dagreD3.util.applyStyle(path, edge[type + "Style"]);
 
 }
@@ -65,8 +65,8 @@ function rightTriangle(parent, id, edge, type) {
         .attr("d", "M 0 0 L 10 5 L 0 10 z")
         .style("stroke-width", 1)
         .style("stroke-dasharray", "1,0")
-        .style("fill", "#fff")
-        .style("stroke", "#333");
+        .style("fill", "black")
+        .style("stroke", "white");
     dagreD3.util.applyStyle(path, edge[type + "Style"]);
 
 }
@@ -84,7 +84,7 @@ function rightFilledDiamond(parent, id, edge, type) {
     const path = marker.append("path")
         .attr("d", "M-1 5 7.5 0 16 5 7.5 10Z")
         .attr("stroke", "none")
-        .attr("fill", "white");
+        .attr("fill", "black");
     dagreD3.util.applyStyle(path, edge[type + "Style"]);
 }
 
@@ -101,7 +101,7 @@ function rightDiamond(parent, id, edge, type) {
      * <path d="M-1 5 7.5 0 16 5 7.5 10Z M1.3 5 7.5 8.7 14 5 7.5 1.3Z"
      * fill-rule="evenodd"
      * stroke="none"
-     * fill="white"></path></marker>
+     * fill="black"></path></marker>
      */
 
         // TODO: 修改为更好的实现
@@ -117,8 +117,8 @@ function rightDiamond(parent, id, edge, type) {
 
     const path = marker.append("path")
         .attr("d", "M-1 5 7.5 0 16 5 7.5 10Z")
-        .attr("stroke", "white")
-        .attr("fill", "black");
+        .attr("stroke", "black")
+        .attr("fill", "white");
     dagreD3.util.applyStyle(path, edge[type + "Style"]);
     // const marker = parent.append("marker")
     //     .attr("id", id)
@@ -132,7 +132,7 @@ function rightDiamond(parent, id, edge, type) {
     // const path = marker.append("path")
     //     .attr("d", "M10 5 0 10 0 8.7 6.8 5.5 0 5.5 0 4.5 6.8 4.5 0 1.3 0 0Z")
     //     .attr("stroke", "none")
-    //     .attr("fill", "white");
+    //     .attr("fill", "black");
     // dagreD3.util.applyStyle(path, edge[type + "Style"]);
 
 }
