@@ -16,7 +16,6 @@ height 需要先根据 tspan 字体大小和 padding 计算出 Text Height，
 
 
 
-
 [ x ] 根据 高度宽度 以及 依赖关系 计算坐标
 
 根据依赖关系， 深度相同的在一层
@@ -42,4 +41,11 @@ height 需要先根据 tspan 字体大小和 padding 计算出 Text Height，
 
 [ x ] 多余框框去除 {完成}
 
-[ x ] 根据连接情况 排布布局
+[ x ] 根据连接情况 排布布局 （分多排 排列）
+
+[ x ] icon 标识类型 enum class interface
+
+
+### 记录
+
+drage-d3 使用的layout方案 用的是 drage中的layout, 所以要更改布局方案，需要更改drage 的 layout.js

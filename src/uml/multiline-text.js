@@ -35,7 +35,7 @@ export default function multilineText() {
 
       textElem.attrs({
         'text-anchor': textAnchorsByHorizontalAlign[horizontalAlign],
-        'fill': 'black',
+        'fill': 'white',
         transform: function(d) {
           return 'translate(' + translateX(d) + ',' + translateY(d) + ')';
         },

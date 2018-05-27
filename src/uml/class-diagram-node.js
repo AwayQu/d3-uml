@@ -52,7 +52,7 @@ function _createConnectors(ctx, connectors) {
             path.attrs({
                 'class': 'connector',
                 'd': line(d.points),
-                'stroke': 'black',
+                'stroke': 'white',
                 'stroke-width': 1,
                 'fill': 'none'
             });
@@ -95,7 +95,7 @@ function _createClasses(ctx, classes) {
                 return d.width;
             },
             'fill': 'none',
-            'stroke': 'black',
+            'stroke': 'white',
             'stroke-width': 1
         });
 
@@ -107,7 +107,7 @@ function _createClasses(ctx, classes) {
                 return d.width;
             },
             'fill': 'none',
-            'stroke': 'black',
+            'stroke': 'white',
             'stroke-width': 1
         });
     var classNameTexts = classNameG.append('text')
@@ -152,7 +152,7 @@ function _createClasses(ctx, classes) {
                 return d.width;
             },
             'fill': 'none',
-            'stroke': 'black',
+            'stroke': 'white',
             'stroke-width': 1
         });
     var attributesTexts = attributesG.filter(fil).append('text')
@@ -189,7 +189,7 @@ function _createClasses(ctx, classes) {
                 return d.width;
             },
             'fill': 'none',
-            'stroke': 'black',
+            'stroke': 'white',
             'stroke-width': 1
         });
     var methodsTexts = methodsG.filter(fil).append('text')
@@ -265,7 +265,7 @@ function _addMarkers(defs) {
             d: 'M10 5 0 0 0 10Z',
             'fill-rule': 'evenodd',
             stroke: 'none',
-            fill: 'black'
+            fill: 'white'
         });
 
     defs.append('marker')
@@ -283,7 +283,7 @@ function _addMarkers(defs) {
             d: 'M10 5 0 0 0 10 Z M8 5 1 8.4 1 1.6Z',
             'fill-rule': 'evenodd',
             stroke: 'none',
-            fill: 'black'
+            fill: 'white'
         });
 
     defs.append('marker')
@@ -300,7 +300,7 @@ function _addMarkers(defs) {
         .attrs({
             d: 'M10 5 0 10 0 8.7 6.8 5.5 0 5.5 0 4.5 6.8 4.5 0 1.3 0 0Z',
             stroke: 'none',
-            fill: 'black'
+            fill: 'white'
         });
 
     defs.append('marker')
@@ -318,7 +318,7 @@ function _addMarkers(defs) {
             d: 'M-1 5 7.5 0 16 5 7.5 10Z M1.3 5 7.5 8.7 14 5 7.5 1.3Z',
             'fill-rule': 'evenodd',
             stroke: 'none',
-            fill: 'black'
+            fill: 'white'
         });
 
     defs.append('marker')
@@ -335,7 +335,7 @@ function _addMarkers(defs) {
         .attrs({
             d: 'M-1 5 7.5 0 16 5 7.5 10Z',
             stroke: 'none',
-            fill: 'black'
+            fill: 'white'
         });
 }
 
